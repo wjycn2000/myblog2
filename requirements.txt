@@ -17,3 +17,4 @@ flask_moment
 flask_ckeditor
 wtforms
 bootstrap-flask
+Faker

@@ -7,6 +7,7 @@ from blueprints.auth import auth_bp
 from blueprints.blog import blog_bp
 from extensions import db, ckeditor, mail, moment, bootstrap
 from settings import config
+import click
 
 
 def create_app(config_name=None):
