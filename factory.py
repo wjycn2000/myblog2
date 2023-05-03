@@ -7,7 +7,7 @@ from flask_wtf.csrf import CSRFError
 from blueprints.admin import admin_bp
 from blueprints.auth import auth_bp
 from blueprints.blog import blog_bp
-from extensions import db, ckeditor, mail, moment, bootstrap, login_manager
+from extensions import db, ckeditor, mail, moment, bootstrap, login_manager, csrf_protect
 from models import Admin, Category, Link, Comment
 from settings import config
 import click
@@ -42,6 +42,8 @@ def register_extensions(app):
     mail.init_app(app)
     moment.init_app(app)
     login_manager.init_app(app)
+    csrf_protect.init_app(app)
+
 
     @login_manager.user_loader
     def load_user(user_id):  # 创建用户加载回调函数，接受用户 ID 作为参数

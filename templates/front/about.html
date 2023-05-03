@@ -3,14 +3,12 @@
 {% block title %}About{% endblock %}
 
 {% block content %}
-    <div class="page-header">
-        <h1>About</h1>
+    <div class="page-header mt-5">
+        <h1>关于</h1>
     </div>
     <div class="row">
         <div class="col-sm-8">
-            <p>简介：该项目为武汉理工大学Python高级程序设计大作业--个人博客。</p>
-            <p>作者：软件2002王金宇</p>
-            <p>参考资料: flask web 开发实战: 入门，进阶与原理解析（李辉）</p>
+            {{ admin.about|safe }}
         </div>
         <div class="col-sm-4 sidebar">
             {% include "front/_sidebar.html" %}

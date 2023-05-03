@@ -14,6 +14,8 @@ class DevelopmentConfig(BaseConfig):
     POST_PER_PAGE = 20
     COMMENT_PER_PAGE = 15
     MANAGE_POST_PER_PAGE = 15
+    UPLOAD_PATH = os.path.join(basedir, 'uploads')
+    EMAIL = '1182301716@qq.com'
 
 
 class TestingConfig(BaseConfig):

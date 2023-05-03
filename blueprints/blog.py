@@ -44,7 +44,7 @@ def show_post(post_id):
     if current_user.is_authenticated:
         form = AdminCommentForm()
         form.author.data = current_user.name
-        form.email.data = current_app.config['BLUELOG_EMAIL']
+        form.email.data = current_app.config['EMAIL']
         form.site.data = url_for('.index')
         from_admin = True
         reviewed = True
@@ -73,3 +73,13 @@ def show_post(post_id):
             flash('Thanks, your comment will be published after reviewed.', 'info')
         return redirect(url_for('.show_post', post_id=post_id))
     return render_template('front/post.html', post=post, pagination=pagination, form=form, comments=comments)
+
+
+@blog_bp.route('/reply/comment/<int:comment_id>')
+def reply_comment(comment_id):
+    comment = Comment.query.get_or_404(comment_id)
+    if not comment.post.can_comment:
+        flash('Comment is disabled.', 'warning')
+        return redirect(url_for('.show_post', post_id=comment.post.id))
+    return redirect(
+        url_for('.show_post', post_id=comment.post_id, reply=comment_id, author=comment.author) + '#comment-form')
