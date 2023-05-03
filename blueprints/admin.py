@@ -185,7 +185,7 @@ def delete_category(category_id):
     if category.id == 1:
         flash('You can not delete the default category.', 'warning')
         return redirect(url_for('blog.index'))
-    category.delete()
+    db.session.delete(category)
     flash('Category deleted.', 'success')
     return redirect(url_for('.manage_category'))
 

@@ -8,9 +8,6 @@ class BaseConfig(object):
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-
-class DevelopmentConfig(BaseConfig):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data-dev.db')
     POST_PER_PAGE = 20
     COMMENT_PER_PAGE = 15
     MANAGE_POST_PER_PAGE = 15
@@ -18,8 +15,14 @@ class DevelopmentConfig(BaseConfig):
     EMAIL = '1182301716@qq.com'
 
 
+class DevelopmentConfig(BaseConfig):
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data-dev.db')
+
+
 class TestingConfig(BaseConfig):
     TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    WTF_CSRF_ENABLED = False
 
 
 config = {
