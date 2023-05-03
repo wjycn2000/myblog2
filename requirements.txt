@@ -17,4 +17,7 @@ flask_moment
 flask_ckeditor
 wtforms
 bootstrap-flask
-Faker
+Faker~=18.6.0
+SQLAlchemy~=2.0.11
+flask-login
+flask-wtf

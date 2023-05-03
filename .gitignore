@@ -240,3 +240,4 @@ cython_debug/
 #.idea/
 
 !/data-dev.db
+!/templates/base.html

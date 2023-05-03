@@ -1,11 +1,13 @@
 import os
 
 from flask import Flask, render_template
+from flask_login import current_user
 
 from blueprints.admin import admin_bp
 from blueprints.auth import auth_bp
 from blueprints.blog import blog_bp
-from extensions import db, ckeditor, mail, moment, bootstrap
+from extensions import db, ckeditor, mail, moment, bootstrap, login_manager
+from models import Admin, Category, Link, Comment
 from settings import config
 import click
 
@@ -38,6 +40,12 @@ def register_extensions(app):
     ckeditor.init_app(app)
     mail.init_app(app)
     moment.init_app(app)
+    login_manager.init_app(app)
+
+    @login_manager.user_loader
+    def load_user(user_id):  # 创建用户加载回调函数，接受用户 ID 作为参数
+        user = Admin.query.get(int(user_id))  # 用 ID 作为 User 模型的主键查询对应的用户
+        return user  # 返回用户对象
 
 
 def register_blueprints(app):
@@ -53,7 +61,18 @@ def register_shell_context(app):
 
 
 def register_template_context(app):
-    pass
+    @app.context_processor
+    def make_template_context():
+        admin = Admin.query.first()
+        categories = Category.query.order_by(Category.name).all()
+        links = Link.query.order_by(Link.name).all()
+        if current_user.is_authenticated:
+            unread_comments = Comment.query.filter_by(reviewed=False).count()
+        else:
+            unread_comments = None
+        return dict(
+            admin=admin, categories=categories,
+            links=links, unread_comments=unread_comments)
 
 
 def register_errors(app):
@@ -76,7 +95,7 @@ def register_commands(app):
     @click.option('--post', default=50, help='Quantity of posts, default is 50')
     @click.option('--comment', default=500, help='Quantity of comments, default is 500')
     def forge(category, post, comment):
-        from fakes import fake_admin, fake_categories, fake_posts, fake_comments
+        from fakes import fake_admin, fake_categories, fake_posts, fake_comments, create_links
 
         db.drop_all()
         db.create_all()
@@ -84,13 +103,16 @@ def register_commands(app):
         click.echo("Generating the administrator...")
         fake_admin()
 
-        click.echo('Generating %d categories' % category)
+        click.echo('Generating %d categories...' % category)
         fake_categories(category)
 
-        click.echo('Generating %d posts' % post)
+        click.echo('Generating %d posts...' % post)
         fake_posts(post)
 
-        click.echo('Generating %d comments' % comment)
+        click.echo('Generating %d comments...' % comment)
         fake_comments(comment)
+
+        click.echo('Generating links...')
+        create_links()
 
         click.echo('Done.')

@@ -11,6 +11,7 @@ class BaseConfig(object):
 
 class DevelopmentConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data-dev.db')
+    POST_PER_PAGE = 20
 
 
 class TestingConfig(BaseConfig):

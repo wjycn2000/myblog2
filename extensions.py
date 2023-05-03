@@ -1,4 +1,4 @@
-
+from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_moment import Moment
 from flask_mail import Mail
@@ -11,3 +11,4 @@ db = SQLAlchemy()
 moment = Moment()
 mail = Mail()
 ckeditor = CKEditor()
+login_manager = LoginManager()

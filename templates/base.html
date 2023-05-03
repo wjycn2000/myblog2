@@ -1,10 +1,62 @@
-<!DOCTYPE html>
+{% from 'bootstrap5/nav.html' import render_nav_item %}
+{% from 'bootstrap5/utils.html' import render_messages%}
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+    <head>
+        {% block head %}
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-</body>
+        {% block styles %}
+            <!-- Bootstrap CSS -->
+            {{ bootstrap.load_css() }}
+        {% endblock %}
+
+        <title>{% block title %}{% endblock %}</title>
+        {% endblock %}
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <div class="navbar-nav mr-auto">
+                    <a href="{{ url_for('blog.index') }}" class="navbar-brand">myBlog</a>
+                    {{ render_nav_item('blog.index', 'Home') }}
+                    {{ render_nav_item('blog.about', 'About') }}
+                </div>
+            </div>
+        </nav>
+
+
+        <main class="container">
+            {{ render_messages(dismissible=True, dismiss_animate=True) }}
+            <!-- Your page content -->
+            {% block content %}{% endblock %}
+            {% block footer %}
+                <footer>
+                    <span class="float-left">
+                        <small>
+                            &copy 软件2002王金宇 Python高级程序设计大作业
+                        </small>
+                    </span>
+                    <span class="float-right">
+                        <small>
+                            {% if current_user.is_authenticated %}
+                                <a href="{{ url_for('auth.logout', next=request.full_path) }}">Logout</a>
+                            {% else %}
+                                <a href="{{ url_for('auth.login', next=request.full_path) }}">Login</a>
+                            {% endif %}
+                        </small>
+                    </span>
+                </footer>
+            {% endblock %}
+
+        </main>
+
+
+        {% block scripts %}
+            <!-- Optional JavaScript -->
+            {{ bootstrap.load_js() }}
+        {% endblock %}
+    </body>
 </html>

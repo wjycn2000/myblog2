@@ -3,7 +3,7 @@ import random
 from sqlalchemy.exc import IntegrityError
 
 from extensions import db
-from models import Admin, Category, Post, Comment
+from models import Admin, Category, Post, Comment, Link
 from faker import Faker
 
 fake = Faker()
@@ -101,6 +101,14 @@ def fake_comments(count=500):
     db.session.commit()
 
 
+def create_links():
+    link1 = Link(name='知乎', url='https://www.zhihu.com')
+    link2 = Link(name='哔哩哔哩', url='https://www.bilibili.com')
+    link3 = Link(name='Github', url='https://github.com')
+    db.session.add(link1)
+    db.session.add(link2)
+    db.session.add(link3)
+    db.session.commit()
 
 
 
