@@ -12,6 +12,8 @@ class BaseConfig(object):
 class DevelopmentConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data-dev.db')
     POST_PER_PAGE = 20
+    COMMENT_PER_PAGE = 15
+    MANAGE_POST_PER_PAGE = 15
 
 
 class TestingConfig(BaseConfig):
