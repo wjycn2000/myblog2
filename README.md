@@ -1,2 +1,2 @@
 # myblog2
-Python高级程序设计大作业
+A blog website based on Flask.
